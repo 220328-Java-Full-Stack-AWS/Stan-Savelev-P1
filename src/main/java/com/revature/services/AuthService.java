@@ -3,7 +3,6 @@ package com.revature.services;
 import com.revature.models.User;
 
 import java.util.Optional;
-import java.util.Scanner;
 
 /**
  * The AuthService should handle login and registration for the ERS application.
@@ -29,7 +28,6 @@ public class AuthService {
      * </ul>
      */
     public User login(String username, String password) {
-
         return null;
     }
 
