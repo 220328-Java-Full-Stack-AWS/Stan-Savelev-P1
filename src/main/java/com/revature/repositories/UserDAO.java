@@ -24,8 +24,8 @@ public class UserDAO {
                 tempUser.setId(rs.getInt("ers_user_id"));
                 tempUser.setUsername(rs.getString("ers_username"));
                 tempUser.setPassword(rs.getString("ers_password"));
-                int roleId = rs.getInt("user_role_id");
-                if (roleId == 1) {
+                int userRoleId = rs.getInt("user_role_id");
+                if (userRoleId == 1) {
                     tempUser.setRole(Role.EMPLOYEE);
                 } else {
                     tempUser.setRole(Role.FINANCE_MANAGER);
