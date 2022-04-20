@@ -1,33 +1,45 @@
 package com.revature;
 
+import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.util.ConnectionManager;
-import com.revature.repositories.UserDAO;
+import com.revature.persistance.UserDAO;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 //Note 1: The Junit test package is marked at excluded for the time being.
 public class Driver {
 
     public static void main(String[] args) {
-        AuthService as = new AuthService();
-        UserDAO foundUser = new UserDAO();
-
+//        AuthService as = new AuthService();
+        UserDAO daoTest = new UserDAO();
         Scanner loginInput = new Scanner(System.in);
 
-        try{
-            Connection conn = ConnectionManager.getConnection();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
+//        try{
+//            Connection conn = ConnectionManager.getConnection();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
         System.out.println("Welcome to the Employee Reimbursement System");
-        System.out.println("To begin, enter your username");
-        String username = loginInput.next();
-        //Testing userByUsername method.
+//      System.out.println("To begin, enter your username");
+        System.out.println("To begin registration, enter a username:");
+        String un = loginInput.next();
+        System.out.println("Enter a password:");
+        String pw = loginInput.next();
+        System.out.println("Enter your first name");
+        String fn = loginInput.next();
+        System.out.println("Enter your last name");
+        String ln = loginInput.next();
+        System.out.println("Finally, enter your email");
+        String em = loginInput.next();
+        //Testing create method found in UserDAO
+        //Test successfully adds a user! (04/20/2022)
+        User newUser = new User(un,pw,fn,ln,em);
         try{
-            System.out.println(foundUser.getByUsername(username));
+            System.out.println(daoTest.create(newUser));
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -44,6 +56,8 @@ public class Driver {
         //I may include a change password method if time allows.
         loginInput.close();
         //vv Testing connection vv
-
+        
     }
+
 }
+
