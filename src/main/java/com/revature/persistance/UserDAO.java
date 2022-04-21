@@ -12,7 +12,6 @@ public class UserDAO {
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
     public Optional<User> getByUsername(String username) throws SQLException {
-//        ConnectionManager.getConnection().prepareStatement(SQL)
             String SQL = "SELECT * FROM ers_users WHERE ers_username = ?";
             PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
             pstmt.setString(1,username);
@@ -45,6 +44,7 @@ public class UserDAO {
 
     //Note 1: Create would depend on registrationUnsuccesful exception as a way to check if the user is already in the DB.
     //When a user is created, their role is defaulted to employee. However, an admin can later change an employee to an admin.
+    //Note 2: Return type needs to be changed to newUser.
     public String create(User newUser) throws SQLException {
         String SQL = "INSERT INTO ers_users (ers_username,ers_password,user_first_name,user_last_name,user_email, user_role_id) VALUES (?,?,?,?,?,?)";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -67,5 +67,20 @@ public class UserDAO {
             throw new SQLException();
         }
 
+    }
+
+    /**
+     The method below allows a user to change their password.
+     Change return type after passing console tests.
+     Tested on 04/21/22. Does not work accordingly yet.
+     */
+    public String changePassword(String username, String newPassword) throws SQLException{
+        String SQL = "UPDATE ers_users SET ers_password = ? WHERE ers_username = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+        pstmt.setString(1,newPassword);
+        pstmt.setString(2,username);
+        pstmt.executeUpdate();
+
+        return "Password successfully changed!";
     }
 }

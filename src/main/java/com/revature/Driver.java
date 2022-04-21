@@ -24,25 +24,36 @@ public class Driver {
 //        }
 //
         System.out.println("Welcome to the Employee Reimbursement System");
-//      System.out.println("To begin, enter your username");
-        System.out.println("To begin registration, enter a username:");
+      System.out.println("To begin, enter your username");
+//        System.out.println("To begin registration, enter a username:");
         String un = loginInput.next();
-        System.out.println("Enter a password:");
-        String pw = loginInput.next();
-        System.out.println("Enter your first name");
-        String fn = loginInput.next();
-        System.out.println("Enter your last name");
-        String ln = loginInput.next();
-        System.out.println("Finally, enter your email");
-        String em = loginInput.next();
+//        System.out.println("Enter a password:");
+//        String pw = loginInput.next();
+//        System.out.println("Enter your first name");
+//        String fn = loginInput.next();
+//        System.out.println("Enter your last name");
+//        String ln = loginInput.next();
+//        System.out.println("Finally, enter your email");
+//        String em = loginInput.next();
         //Testing create method found in UserDAO
         //Test successfully adds a user! (04/20/2022)
-        User newUser = new User(un,pw,fn,ln,em);
+//        User newUser = new User(un,pw,fn,ln,em);
+//        try{
+//            System.out.println(daoTest.create(newUser));
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
+
+        System.out.println("Please enter a new password");
+        String newPw = loginInput.next();
+
         try{
-            System.out.println(daoTest.create(newUser));
+            System.out.println(daoTest.changePassword(newPw, un));
         }catch (SQLException e){
             e.printStackTrace();
         }
+
+
 
 //        System.out.println("Hello, " + username + ".");
 //        System.out.println("Enter your password");

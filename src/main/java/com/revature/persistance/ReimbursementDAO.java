@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import com.revature.models.Status;
 
 public class ReimbursementDAO {
 
@@ -20,21 +21,17 @@ public class ReimbursementDAO {
      * Should retrieve a Reimbursement from the DB with the corresponding id or an empty optional if there is no match.
      */
     public Optional<Reimbursement> getById(int id) throws SQLException {
-//        Connection conn = ConnectionManager.getConnection();
-//        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
-//        PreparedStatement pstmt = conn.prepareStatement(SQL);
-//        pstmt.setInt(1,id);
-//        ResultSet rs = pstmt.executeQuery();
-//        Reimbursement tempReimb = new Reimbursement();
-//
-//        if (rs.next()) {
-//            tempReimb.setId(rs.getInt("ers_user_id"));
-//            tempReimb.setStatus(rs.getString("ers_username"));
-//            tempReimb.setAuthor(rs.getString("ers_password"));
-//            tempReimb.setResolver(rs.getString("ers_password"));
-//            tempReimb.setAmount(rs.getString("ers_password"));
-//            return Optional.of(tempReimb);
-//        }
+        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+
+        pstmt.setInt(1,id);
+        ResultSet rs = pstmt.executeQuery();
+        Reimbursement tempReimb = new Reimbursement();
+
+        if (rs.next()) {
+
+            return Optional.of(tempReimb);
+        }
 
         return Optional.empty();
     }
@@ -43,6 +40,9 @@ public class ReimbursementDAO {
      * Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
      */
     public List<Reimbursement> getByStatus(Status status) {
+//        if(status == Status){
+//
+//        }
         return Collections.emptyList();
     }
 
