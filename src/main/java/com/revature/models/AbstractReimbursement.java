@@ -22,7 +22,7 @@ import java.util.Objects;
 public class AbstractReimbursement {
 
     private int id;
-    private int status;
+    private Status status;
     private int author;
     private int resolver;
     private double amount;
@@ -31,7 +31,7 @@ public class AbstractReimbursement {
         super();
     }
 
-    public AbstractReimbursement(int id, int status, int author, int resolver, double amount) {
+    public AbstractReimbursement(int id, Status status, int author, int resolver, double amount) {
         super();
         this.id = id;
         this.status = status;
@@ -42,6 +42,10 @@ public class AbstractReimbursement {
 
     public AbstractReimbursement(int status, int author, double amount) {
         super();
+    }
+    public AbstractReimbursement(double amount){
+        super();
+        this.amount = amount;
     }
 
     //The below constructor is used within the reimbursement class.
@@ -65,11 +69,11 @@ public class AbstractReimbursement {
         this.id = id;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

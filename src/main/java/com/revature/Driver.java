@@ -17,25 +17,28 @@ import static java.lang.Integer.parseInt;
 public class Driver {
 
     public static void main(String[] args) {
-        AdminDAO testAdminDao = new AdminDAO();
+        ReimbursementDAO testReimbDao = new ReimbursementDAO();
         Scanner loginInput = new Scanner(System.in);
+        System.out.println("Updating request");
+        System.out.println("Enter the reimbusrement id");
+        int reimbId = Integer.parseInt(loginInput.next());
+        System.out.println("Amount");
+        double am = Double.parseDouble(loginInput.next());
+        System.out.println("Description");
+        String desc = loginInput.next();
+        System.out.println("Enter the type. 1) FOOD 2) TRAVEL 3) LODGING");
+        int type = Integer.parseInt(loginInput.next());
 
-        System.out.println("Enter status:");
-        System.out.println("The options are: 1)Pending 2)Approved 3)Denied");
-        int statusCode = Integer.parseInt(loginInput.next());
 
-
+        Reimbursement request = new Reimbursement(am,desc,type);
         try{
-            testAdminDao.getByStatus(statusCode);
+            testReimbDao.editByReimbId(reimbId, request);
         }catch (SQLException e){
             e.printStackTrace();
         }
-//
-        //If the user is not in the database, prompt them to either register or validate credentials.
-        //I may include a change password method if time allows.
+
         loginInput.close();
 
-        
     }
 
 }

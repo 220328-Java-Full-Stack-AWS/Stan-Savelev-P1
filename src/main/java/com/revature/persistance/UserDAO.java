@@ -44,7 +44,7 @@ public class UserDAO {
 
     //Note 1: Create would depend on registrationUnsuccesful exception as a way to check if the user exists in the DB.
     //When a user is created, their role is defaulted to employee. However, an admin can later change an employee to an admin.
-    //Note 2: Return type needs to be changed to newUser object.
+
     public User create(User newUser) throws SQLException {
         String SQL = "INSERT INTO ers_users (ers_username,ers_password,user_first_name,user_last_name,user_email, user_role_id) VALUES (?,?,?,?,?,?)";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);

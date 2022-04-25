@@ -27,14 +27,9 @@ public class AdminDAO extends UserDAO {
         return super.changePassword(username, newPassword);
     }
 
-    /**
-     * promoteToAdmin promotes a user in the DB to an Admin
-     * Change to void after passing console test
-     * 04/21/22 This method has not been tested yet.
-     */
 
 
-    //To be completed by today (04/24/2022)
+
 //    Admin/Finance Manager:
 
 //    As an admin, I can approve expense reimbursements
@@ -46,9 +41,7 @@ public class AdminDAO extends UserDAO {
     public String resolveRequest(int resolver, int reimbId, int status) throws SQLException {
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String SQL = "UPDATE ers_reimbursement " +
-                "SET (reimb_resolved = ?, reimb_resolver = ?, reimb_status_id = ?)"+
-                "WHERE reimb_id = ?";
+        String SQL = "UPDATE ers_reimbursement  SET reimb_resolved = ?, reimb_resolver = ?, reimb_status_id = ? WHERE reimb_id = ?";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
 
         pstmt.setString(1,todaysDate.format(pattern));
@@ -86,6 +79,11 @@ public class AdminDAO extends UserDAO {
         return resultArray;
     }
 
+    /**
+     * promoteToAdmin promotes a user in the DB to an Admin
+     * Change to void after passing console test
+     * 04/21/22 This method has not been tested yet.
+     */
     public void promoteToAdminById(int userId) throws SQLException{
         String SQL = "UPDATE ers_users SET user_role_id = ? WHERE ers_user_id = ?";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);

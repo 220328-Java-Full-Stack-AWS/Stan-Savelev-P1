@@ -27,13 +27,18 @@ public class Reimbursement extends AbstractReimbursement {
      * If other fields are needed, please create additional constructors.
      */
 
-    public Reimbursement(int id, int status, int author, int resolver, double amount) {
+    public Reimbursement(int id, Status status, int author, int resolver, double amount) {
         super(id, status, author, resolver, amount);
     }
 
     //The below constructor is used to submit a new request
     public Reimbursement( double amount, String desc, int author,  int typeId){
         super(amount, author);
+        this.desc = desc;
+        this.typeId = typeId;
+    }
+    public Reimbursement( double amount, String desc,  int typeId){
+        super(amount);
         this.desc = desc;
         this.typeId = typeId;
     }

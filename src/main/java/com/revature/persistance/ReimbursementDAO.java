@@ -63,29 +63,18 @@ public class ReimbursementDAO {
 //
 ////
 //    }
-
-    /**
-     * Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
-     */
-    //See admin DAO
-    public List<Reimbursement> getByStatus(Status status) {
 //
-        return Collections.emptyList();
-    }
-
-    /**
-     * <ul>
-     *     <li>Should Update an existing Reimbursement record in the DB with the provided information.</li>
-     *     <li>Should throw an exception if the update is unsuccessful.</li>
-     *     <li>Should return a Reimbursement object with updated information.</li>
-     * </ul>
-     */
+//     * <ul>
+//     *     <li>Should Update an existing Reimbursement record in the DB with the provided information.</li>
+//     *     <li>Should throw an exception if the update is unsuccessful.</li>
+//     *     <li>Should return a Reimbursement object with updated information.</li>
+//     * </ul>
+//     */
 
 
     //Change submitRequest to void after test
     //Works as of 04/24/2022
     public String submitRequest(Reimbursement request) throws SQLException {
-
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String SQL = "INSERT INTO ers_reimbursement"
@@ -112,28 +101,66 @@ public class ReimbursementDAO {
 
         return "Request successfully submitted!";
     }
-    public Reimbursement readById(int id) throws SQLException{return null;}
+
 
     //updateAmountById works when SQL command is executed in Dbeaver but not through the DAO?
-    //Does an update require an object input?
-    public void editAmountById(int id, double amount) throws SQLException {
-        String SQL = "UPDATE ers_reimbursement SET reimb_amount = ? WHERE reimb_id = ?";
-        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
-        pstmt.setInt(1, id);
-        pstmt.setDouble(2, amount);
-        pstmt.executeUpdate();
 
+    public void editByReimbId(int id, Reimbursement request) throws SQLException {
+        LocalDate todaysDate = LocalDate.now();
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String SQL = "UPDATE ers_reimbursement" +
+                "SET reimb_amount = ? ,reimb_submitted = ?,reimb_description = ? ,reimb_status_id = ?, reimb_type_id = ?" +
+                "WHERE reimb_id = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+
+        pstmt.setDouble(1, request.getAmount());
+        pstmt.setString(2, todaysDate.format(pattern));
+        pstmt.setString(3, request.getDesc());
+        pstmt.setInt(4, 1);
+        pstmt.setInt(5, request.getTypeId());
+        pstmt.setInt(6, id);
+
+        pstmt.executeUpdate();
     }
 
     //To clarify, this method deletes the row with the uniquely assigned reimb_id.
     //Tested and works!(04/23/2022)
-    public void cancelById(int id) throws SQLException {
+    public void cancelByReimbId(int id) throws SQLException {
         String SQL = "DELETE FROM ers_reimbursement WHERE reimb_id = ?";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
         pstmt.setInt(1, id);
         pstmt.executeUpdate();
     }
 
-    //To be completed by today(04/24/2022)
+    //Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
+    public List<Reimbursement> viewByStatus(Status status) throws SQLException {
+        ArrayList<Reimbursement> resultArray = new ArrayList<>();
 
+
+        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+        if(status == Status.PENDING) {
+            pstmt.setInt(1, 1);
+        }else if( status == Status.APPROVED){
+            pstmt.setInt(1, 2);
+        }else{
+            pstmt.setInt(1, 3);
+        }
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            Reimbursement tempReimb = new Reimbursement();
+
+            tempReimb.setId(rs.getInt("reimb_id"));
+            tempReimb.setAmount(rs.getDouble("reimb_amount"));
+            tempReimb.setDesc(rs.getString("reimb_description"));
+            tempReimb.setAuthor(rs.getInt("reimb_author"));
+            tempReimb.setResolver(rs.getInt("reimb_resolver"));
+            tempReimb.setTypeId(rs.getInt("reimb_type_id"));
+
+            resultArray.add((tempReimb));
+        }
+
+        return resultArray;
+    }
 }
