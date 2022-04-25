@@ -1,7 +1,9 @@
 package com.revature.services;
 
 import com.revature.models.User;
+import com.revature.persistance.UserDAO;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -17,7 +19,11 @@ import java.util.Optional;
  * </ul>
  */
 public class AuthService {
+    private final UserDAO dao;
 
+    public AuthService(){
+        this.dao = new UserDAO();
+    }
     /**
      * <ul>
      *     <li>Needs to check for existing users with username/email provided.</li>
@@ -44,8 +50,8 @@ public class AuthService {
      * Note: userToBeRegistered will have an id=0, additional fields may be null.
      * After registration, the id will be a positive integer.
      */
-    public User register(User userToBeRegistered) {
-        return null;
+    public User register(User userToBeRegistered) throws SQLException {
+        return dao.create(userToBeRegistered);
     }
 
     /**

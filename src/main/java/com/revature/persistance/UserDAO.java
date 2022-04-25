@@ -42,10 +42,10 @@ public class UserDAO {
      * </ul>
      */
 
-    //Note 1: Create would depend on registrationUnsuccesful exception as a way to check if the user is already in the DB.
+    //Note 1: Create would depend on registrationUnsuccesful exception as a way to check if the user exists in the DB.
     //When a user is created, their role is defaulted to employee. However, an admin can later change an employee to an admin.
-    //Note 2: Return type needs to be changed to newUser.
-    public String create(User newUser) throws SQLException {
+    //Note 2: Return type needs to be changed to newUser object.
+    public User create(User newUser) throws SQLException {
         String SQL = "INSERT INTO ers_users (ers_username,ers_password,user_first_name,user_last_name,user_email, user_role_id) VALUES (?,?,?,?,?,?)";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 
@@ -62,7 +62,7 @@ public class UserDAO {
         if (keys.next()) {
             int id = keys.getInt(1);
             newUser.setId(id);
-            return "New user created!";
+            return newUser;
         } else {
             throw new SQLException();
         }
@@ -71,7 +71,7 @@ public class UserDAO {
 
     /**
      The method below allows a user to change their password.
-     Change return type after passing console tests.
+     Note: Change return type after passing console tests.
      Tested on 04/21/22. Does not work accordingly yet.
      */
     public String changePassword(String username, String newPassword) throws SQLException{

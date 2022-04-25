@@ -15,6 +15,9 @@ package com.revature.models;
  */
 public class Reimbursement extends AbstractReimbursement {
 
+    private String desc; // Abbreviates description
+    private int typeId; // typeId represents the reimbursement type
+
     public Reimbursement() {
         super();
     }
@@ -23,7 +26,38 @@ public class Reimbursement extends AbstractReimbursement {
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractReimbursement} class.
      * If other fields are needed, please create additional constructors.
      */
-    public Reimbursement(int id, Status status, User author, User resolver, double amount) {
+
+    public Reimbursement(int id, int status, int author, int resolver, double amount) {
         super(id, status, author, resolver, amount);
     }
+
+    //The below constructor is used to submit a new request
+    public Reimbursement( double amount, String desc, int author,  int typeId){
+        super(amount, author);
+        this.desc = desc;
+        this.typeId = typeId;
+    }
+    //Constructor used in reimbursement DAO for getByStatus
+    public Reimbursement(int id, double amount, String desc, int author, int resolver,  int typeId){
+        super(id,author,resolver,amount);
+        this.desc = desc;
+        this.typeId = typeId;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
 }
