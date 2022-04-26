@@ -2,5 +2,5 @@ package com.revature.servlets;
 
 import javax.servlet.http.HttpServlet;
 
-public class ReimbursementPageServlet extends HttpServlet {
+public class ReimbursementServlet extends HttpServlet {
 }

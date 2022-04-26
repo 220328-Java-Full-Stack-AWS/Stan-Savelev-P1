@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-public class LoginPageServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
     private AuthService authService;
     private UserService userService;
     private ObjectMapper mapper;

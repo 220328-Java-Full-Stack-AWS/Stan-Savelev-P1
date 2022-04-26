@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class RegistrationPageServlet extends HttpServlet {
+public class RegistrationServlet extends HttpServlet {
     private ObjectMapper mapper;
     private AuthService authService;
 

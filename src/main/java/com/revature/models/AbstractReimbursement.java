@@ -43,6 +43,7 @@ public class AbstractReimbursement {
     public AbstractReimbursement(int status, int author, double amount) {
         super();
     }
+    //The below constructor is used to edit an existing reimbursement
     public AbstractReimbursement(double amount){
         super();
         this.amount = amount;

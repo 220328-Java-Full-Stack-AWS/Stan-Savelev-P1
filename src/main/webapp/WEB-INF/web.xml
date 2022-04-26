@@ -27,24 +27,24 @@
 
     <!--Login Servlet-->
     <servlet-mapping>
-        <servlet-name>loginPageServlet</servlet-name>
+        <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>loginPageServlet</servlet-name>
-        <servlet-class>com.revature.servlets.LoginPageServlet</servlet-class>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>com.revature.servlets.LoginServlet</servlet-class>
     </servlet>
 
-    <!-- Registration servlet-->
+    <!-- Registration Servlet-->
     <servlet-mapping>
-        <servlet-name>registerPageServlet</servlet-name>
+        <servlet-name>registerServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>registerPageServlet</servlet-name>
-        <servlet-class>com.revature.servlets.RegisterPageServlet</servlet-class>
+        <servlet-name>registerServlet</servlet-name>
+        <servlet-class>com.revature.servlets.RegisterServlet</servlet-class>
     </servlet>
 
     <!--Reimbursement Servlet-->
@@ -54,8 +54,8 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>reimbursementPageServlet</servlet-name>
-        <servlet-class>com.revature.servlets.ReimbursementPageServlet</servlet-class>
+        <servlet-name>reimbursementServlet</servlet-name>
+        <servlet-class>com.revature.servlets.ReimbursementServlet</servlet-class>
     </servlet>
 
     <!--User Servlet-->
@@ -65,8 +65,8 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>userPageServlet</servlet-name>
-        <servlet-class>com.revature.servlets.UserPageServlet</servlet-class>
+        <servlet-name>userServlet</servlet-name>
+        <servlet-class>com.revature.servlets.UserServlet</servlet-class>
     </servlet>
 
     <!-- Cors Filter -->

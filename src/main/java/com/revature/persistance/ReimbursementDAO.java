@@ -23,29 +23,30 @@ public class ReimbursementDAO {
     /**
      * Should retrieve a Reimbursement from the DB with the corresponding id or an empty optional if there is no match.
      */
-//    public Optional<User> getByUsername(String username) throws SQLException {
-//            String SQL = "SELECT * FROM ers_users WHERE ers_username = ?";
-//            PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
-//            pstmt.setString(1,username);
-//            ResultSet rs = pstmt.executeQuery();
-//            User tempUser = new User();
-//
-//            if (rs.next()) {
-//                tempUser.setId(rs.getInt("ers_user_id"));
-//                tempUser.setUsername(rs.getString("ers_username"));
-//                tempUser.setPassword(rs.getString("ers_password"));
-//                int userRoleId = rs.getInt("user_role_id");
-//
-//                if (userRoleId == 1) {
-//                    tempUser.setRole(Role.EMPLOYEE);
-//                } else {
-//                    tempUser.setRole(Role.FINANCE_MANAGER);
-//                }
-//                return Optional.of(tempUser);
-//            }
-//
-//            return Optional.empty();
-//        }
+    public Optional<User> getByUsername(String username) throws SQLException {
+        String SQL = "SELECT * FROM ers_users WHERE ers_username = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+        pstmt.setString(1,username);
+        ResultSet rs = pstmt.executeQuery();
+        User tempUser = new User();
+
+        if (rs.next()) {
+            tempUser.setId(rs.getInt("ers_user_id"));
+            tempUser.setUsername(rs.getString("ers_username"));
+            tempUser.setPassword(rs.getString("ers_password"));
+            int userRoleId = rs.getInt("user_role_id");
+
+            if (userRoleId == 1) {
+                tempUser.setRole(Role.EMPLOYEE);
+            } else {
+                tempUser.setRole(Role.FINANCE_MANAGER);
+            }
+            return Optional.of(tempUser);
+        }
+
+        return Optional.empty();
+    }
+
 //    public Optional<Reimbursement> getById(int id) throws SQLException {
 //        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
 //        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
@@ -104,23 +105,23 @@ public class ReimbursementDAO {
 
 
     //updateAmountById works when SQL command is executed in Dbeaver but not through the DAO?
-
-    public void editByReimbId(int id, Reimbursement request) throws SQLException {
+    // Change to void when console can past test
+    //Update(edit) finally works! (04/25/2022). The issue was the SQL command
+    public Reimbursement editByReimbId(int id, Reimbursement request) throws SQLException {
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String SQL = "UPDATE ers_reimbursement" +
-                "SET reimb_amount = ? ,reimb_submitted = ?,reimb_description = ? ,reimb_status_id = ?, reimb_type_id = ?" +
-                "WHERE reimb_id = ?";
+        String SQL = "UPDATE ers_reimbursement SET reimb_amount = ? ,reimb_submitted = ?, reimb_description = ? , reimb_type_id = ? WHERE reimb_id = ?";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
 
         pstmt.setDouble(1, request.getAmount());
         pstmt.setString(2, todaysDate.format(pattern));
         pstmt.setString(3, request.getDesc());
-        pstmt.setInt(4, 1);
-        pstmt.setInt(5, request.getTypeId());
-        pstmt.setInt(6, id);
+        pstmt.setInt(4, request.getTypeId());
+        pstmt.setInt(5, id);
 
         pstmt.executeUpdate();
+
+        return request;
     }
 
     //To clarify, this method deletes the row with the uniquely assigned reimb_id.
@@ -135,10 +136,9 @@ public class ReimbursementDAO {
     //Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
     public List<Reimbursement> viewByStatus(Status status) throws SQLException {
         ArrayList<Reimbursement> resultArray = new ArrayList<>();
-
-
         String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+
         if(status == Status.PENDING) {
             pstmt.setInt(1, 1);
         }else if( status == Status.APPROVED){
