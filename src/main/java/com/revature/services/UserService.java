@@ -32,22 +32,25 @@ public class UserService {
 	public User create(User user) throws SQLException {
 		return dao.create(user);
 	}
-	public Optional<User> read(int id) throws SQLException {
+	public User read(int id) throws SQLException {
 		return dao.getById(id);
+	}
+	public List<User> read() throws SQLException {
+		return dao.getAll();
 	}
 
 	public Optional<User> read(String username) throws SQLException {
 		return dao.getByUsername(username);
 	}
+	public void update(int resolver, int reimbId, int status) throws SQLException {
+		dao.processRequest(resolver,reimbId,status);
+	}
+
 	public void update(int id) throws SQLException {
 		dao.promoteToAdminById(id);
 	}
 	public void delete(int id) throws SQLException {
 		dao.deleteById(id);
-	}
-
-	public List<User> getAll() throws SQLException {
-		return dao.getAll();
 	}
 
 }

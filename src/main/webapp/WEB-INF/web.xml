@@ -60,8 +60,8 @@
 
     <!--User Servlet-->
     <servlet-mapping>
-        <servlet-name>reimbursementServlet</servlet-name>
-        <url-pattern>/reimbursement</url-pattern>
+        <servlet-name>userServlet</servlet-name>
+        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
     <servlet>

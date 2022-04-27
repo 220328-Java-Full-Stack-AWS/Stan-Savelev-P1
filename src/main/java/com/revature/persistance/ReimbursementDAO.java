@@ -47,23 +47,34 @@ public class ReimbursementDAO {
         return Optional.empty();
     }
 
-//    public Optional<Reimbursement> getById(int id) throws SQLException {
-//        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
-//        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
-//
-//        pstmt.setInt(1,id);
-//        ResultSet rs = pstmt.executeQuery();
-//        Reimbursement tempReimb = new Reimbursement();
-//
-//        if (rs.next()) {
-////            tempReimb
-//            return Optional.of(tempReimb);
-//        }
-//
-//        return Optional.empty();
-//
-////
-//    }
+    // Retreives all requests based on the author(ers_user_id)
+    //Not yet tested
+    public List<Reimbursement> getAllRequestsById(int id) throws SQLException {
+        ArrayList list = new ArrayList();
+
+        String SQL = "SELECT * FROM ers_reimbursements WHERE reimb_author = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+        pstmt.setInt(1, id);
+
+        ResultSet rs = pstmt.executeQuery();
+        
+        while(rs.next()) {
+            Reimbursement tempReimb = new Reimbursement();
+
+            tempReimb.setId(rs.getInt("reimb_id"));
+            tempReimb.setAmount(rs.getDouble("reimb_amount"));
+            tempReimb.setSubmittedDate(rs.getString("reimb_submitted"));
+            tempReimb.setResolvedDate(rs.getString("reimb_resolved"));
+            tempReimb.setDesc(rs.getString("reimb_description"));
+            tempReimb.setResolver(rs.getInt("reimb_status_id"));
+            tempReimb.setTypeId(rs.getInt("reimb_type_id"));
+
+            list.add(tempReimb);
+            }
+
+
+        return list;
+    }
 //
 //     * <ul>
 //     *     <li>Should Update an existing Reimbursement record in the DB with the provided information.</li>
@@ -106,7 +117,7 @@ public class ReimbursementDAO {
 
     //updateAmountById works when SQL command is executed in Dbeaver but not through the DAO?
     // Change to void when console can past test
-    //Update(edit) finally works! (04/25/2022). The issue was the SQL command
+    //Update(edit) finally works as of 04/25/2022. The issue was the SQL command.
     public Reimbursement editByReimbId(int id, Reimbursement request) throws SQLException {
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -125,7 +136,7 @@ public class ReimbursementDAO {
     }
 
     //To clarify, this method deletes the row with the uniquely assigned reimb_id.
-    //Tested and works!(04/23/2022)
+    //Tested and works as of 04/23/2022
     public void cancelByReimbId(int id) throws SQLException {
         String SQL = "DELETE FROM ers_reimbursement WHERE reimb_id = ?";
         PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);

@@ -25,15 +25,14 @@ public class UserServlet extends HttpServlet {
         this.mapper = new ObjectMapper();
     }
 
-
+    //Needs work.
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String ers_users_id = req.getHeader("ers_users_id");
-        int integer = Integer.parseInt(ers_users_id);
-        Optional<User> user = null;
+        String ers_user_id = req.getHeader("ers_user_id");
+        Integer i = Integer.parseInt(ers_user_id);
+        User user = new User();
         try {
-            user = this.service.read(integer);
+            user = service.read(i);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,16 +45,20 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.readValue(req.getReader().toString(), User.class);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        try {
+            service.delete(Integer.parseInt(req.getHeader("ers_user_id")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

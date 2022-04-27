@@ -13,7 +13,6 @@ public class HealthServlet extends HttpServlet {
 
         resp.setStatus(200);
         resp.getWriter().print("Health Check Passed!");
-
         System.out.println("Health Check Passed!");
     }
 }

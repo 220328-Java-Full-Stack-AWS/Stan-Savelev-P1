@@ -16,35 +16,37 @@ public class UserDAO {
     /**
      * Should retrieve a User from the DB with the corresponding id or an empty optional if there is no match.
      */
-    public Optional<User> getById(int id) throws SQLException{
+
+    //GET group
+    //Changed return type from optional to user for debugging.
+    //GetById persists but does not deliver data to postman
+    public User getById(int id) throws SQLException{
             User tempUser = new User();
 
-            String SQL = "SELECT * FROM ers_users WHERE ers_users_id = ?";
-            Connection conn = ConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(SQL);
-            pstmt.setInt(1, id);
-
-            ResultSet rs = pstmt.executeQuery();
+                String SQL = "SELECT * FROM ers_users WHERE ers_user_id = ?";
+                PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+                pstmt.setInt(1, id);
+                ResultSet rs = pstmt.executeQuery();
 
 
-            while(rs.next()) {
-                tempUser.setId(rs.getInt("ers_users_id"));
-                tempUser.setUsername(rs.getString("ers_username"));
-                tempUser.setPassword(rs.getString("ers_password"));
-                tempUser.setFirstName(rs.getString("user_first_name"));
-                tempUser.setLastName(rs.getString("user_last_name"));
-                tempUser.setEmail(rs.getString("user_email"));
-                int userRoleId = rs.getInt("user_role_id");
+                while(rs.next()) {
+                    tempUser.setId(rs.getInt("ers_user_id"));
+                    tempUser.setUsername(rs.getString("ers_username"));
+                    tempUser.setPassword(rs.getString("ers_password"));
+                    tempUser.setFirstName(rs.getString("user_first_name"));
+                    tempUser.setLastName(rs.getString("user_last_name"));
+                    tempUser.setEmail(rs.getString("user_email"));
+                    int userRoleId = rs.getInt("user_role_id");
 
-                if (userRoleId == 1) {
-                    tempUser.setRole(Role.EMPLOYEE);
-                } else {
-                    tempUser.setRole(Role.FINANCE_MANAGER);
+                    if (userRoleId == 1) {
+                        tempUser.setRole(Role.EMPLOYEE);
+                    } else {
+                        tempUser.setRole(Role.FINANCE_MANAGER);
+                    }
+                    return tempUser;
                 }
-                return Optional.of(tempUser);
-            }
 
-        return Optional.empty();
+        return null;
     }
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
@@ -71,6 +73,61 @@ public class UserDAO {
             }
 
             return Optional.empty();
+    }
+
+    //Returns all information in the ers_users table
+    //Untested method
+
+    public List<User> getAll() throws SQLException{
+        ArrayList list = new ArrayList();
+
+        String SQL = "SELECT * FROM ers_users";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
+        ResultSet rs = pstmt.executeQuery();
+
+        while(rs.next()) {
+            User tempUser = new User();
+            tempUser.setId(rs.getInt("ers_users_id"));
+            tempUser.setUsername(rs.getString("ers_username"));
+            tempUser.setPassword(rs.getString("ers_password"));
+            tempUser.setFirstName(rs.getString("user_first_name"));
+            tempUser.setLastName(rs.getString("user_last_name"));
+            tempUser.setEmail(rs.getString("user_email"));
+            int userRoleId = rs.getInt("user_role_id");
+            if (userRoleId == 1) {
+                tempUser.setRole(Role.EMPLOYEE);
+            } else {
+                tempUser.setRole(Role.FINANCE_MANAGER);
+            }
+            list.add(tempUser);
+        }
+
+        return list;
+    }
+
+    //Returns a list of users with a specific status label.
+    //Works as of 04/25/2022
+    public List<Reimbursement> getByStatus(int status) throws SQLException {
+        ArrayList<Reimbursement> resultArray = new ArrayList<>();
+        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
+        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);;
+        pstmt.setInt(1, status);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            Reimbursement tempReimb = new Reimbursement();
+
+            tempReimb.setId(rs.getInt("reimb_id"));
+            tempReimb.setAmount(rs.getDouble("reimb_amount"));
+            tempReimb.setDesc(rs.getString("reimb_description"));
+            tempReimb.setAuthor(rs.getInt("reimb_author"));
+            tempReimb.setResolver(rs.getInt("reimb_resolver"));
+            tempReimb.setTypeId(rs.getInt("reimb_type_id"));
+
+            resultArray.add((tempReimb));
+        }
+
+        return resultArray;
     }
     /**
      * <ul>
@@ -107,47 +164,11 @@ public class UserDAO {
 
     }
 
-    //The below methods checks if the user is an admin
-//    public boolean checkIfAdmin(int userId) throws SQLException{
-//        String SQL = "SELECT user_role_id FROM ers_users WHERE ers_user_id = ?";
-//        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
-//        pstmt.setInt(1,userId);
-//        ResultSet rs = pstmt.executeQuery();
-//        boolean admin = false;
-//    }
-
-    //Untested method
-    public List<User> getAll() throws SQLException{
-        ArrayList list = new ArrayList();
-
-        String SQL = "SELECT * FROM ers_users";
-        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);
-        ResultSet rs = pstmt.executeQuery();
-
-        while(rs.next()) {
-            User tempUser = new User();
-            tempUser.setId(rs.getInt("ers_users_id"));
-            tempUser.setUsername(rs.getString("ers_username"));
-            tempUser.setPassword(rs.getString("ers_password"));
-            tempUser.setFirstName(rs.getString("user_first_name"));
-            tempUser.setLastName(rs.getString("user_last_name"));
-            tempUser.setEmail(rs.getString("user_email"));
-            int userRoleId = rs.getInt("user_role_id");
-            if (userRoleId == 1) {
-                tempUser.setRole(Role.EMPLOYEE);
-            } else {
-                tempUser.setRole(Role.FINANCE_MANAGER);
-            }
-            list.add(tempUser);
-        }
-
-        return list;
-    }
 
     /**
      * promoteToAdmin promotes a user in the DB to an Admin
      * Change to void after passing console test
-     * 04/21/22 This method has not been tested yet.
+     * Method works as of 04/26/22
      * @param userId
      */
     public String promoteToAdminById(int userId) throws SQLException{
@@ -160,37 +181,9 @@ public class UserDAO {
         return "Update made";
     }
 
-    //Returns a list of users with a specific status label.
-    //Works as of 04/25/2022
-    public List<Reimbursement> getByStatus(int status) throws SQLException {
-        ArrayList<Reimbursement> resultArray = new ArrayList<>();
-
-
-        String SQL = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
-        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL);;
-        pstmt.setInt(1, status);
-
-        ResultSet rs = pstmt.executeQuery();
-
-        while (rs.next()) {
-            Reimbursement tempReimb = new Reimbursement();
-
-            tempReimb.setId(rs.getInt("reimb_id"));
-            tempReimb.setAmount(rs.getDouble("reimb_amount"));
-            tempReimb.setDesc(rs.getString("reimb_description"));
-            tempReimb.setAuthor(rs.getInt("reimb_author"));
-            tempReimb.setResolver(rs.getInt("reimb_resolver"));
-            tempReimb.setTypeId(rs.getInt("reimb_type_id"));
-
-            resultArray.add((tempReimb));
-        }
-
-        return resultArray;
-    }
-
     //Approves/Denies requests.
     //Works as of (04/25/2022)
-    public String processRequest(int resolver, int reimbId, int status) throws SQLException {
+    public void processRequest(int resolver, int reimbId, int status) throws SQLException {
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String SQL = "UPDATE ers_reimbursement  SET reimb_resolved = ?, reimb_resolver = ?, reimb_status_id = ? WHERE reimb_id = ?";
@@ -202,7 +195,6 @@ public class UserDAO {
         pstmt.setInt(4, reimbId);
 
         pstmt.executeUpdate();
-        return "Request resolved!";
     }
 
     //Deletes user by ers_user_id

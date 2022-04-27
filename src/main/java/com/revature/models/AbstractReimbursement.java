@@ -40,9 +40,7 @@ public class AbstractReimbursement {
         this.amount = amount;
     }
 
-    public AbstractReimbursement(int status, int author, double amount) {
-        super();
-    }
+
     //The below constructor is used to edit an existing reimbursement
     public AbstractReimbursement(double amount){
         super();
@@ -60,6 +58,13 @@ public class AbstractReimbursement {
         super();
         this.amount = amount;
         this.resolver = resolver;
+    }
+
+    public AbstractReimbursement(int id, int resolver, double amount){
+        super();
+        this.amount = amount;
+        this.resolver = resolver;
+        this.amount = amount;
     }
 
     public int getId() {

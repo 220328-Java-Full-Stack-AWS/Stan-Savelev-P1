@@ -1,5 +1,4 @@
 package com.revature.util;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -11,7 +10,6 @@ public class ConnectionManager {
 
     private ConnectionManager() {
     }
-
 
     public static Connection getConnection(){
         if(connection == null) {
@@ -34,7 +32,7 @@ public class ConnectionManager {
     private static Connection connect(){
 
         try {
-
+            Class.forName("org.postgresql.Driver");
             //New method grabbing the properties from the JAR classpath
             Properties props = new Properties();
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -45,8 +43,7 @@ public class ConnectionManager {
             String connectionString = "jdbc:postgresql://" +
                     props.getProperty("hostname") + ":" +
                     props.getProperty("port") + "/" +
-                    props.getProperty("dbname")
-                    + "?schemaName=" +
+                    props.getProperty("dbname") + "?schemaName=" +
                     props.getProperty("schemaName");
 
             String username = props.getProperty("username");
@@ -54,9 +51,12 @@ public class ConnectionManager {
 
             connection = DriverManager.getConnection(connectionString, username, password);
 
+            //Set search path to access different schemas:
+            String sql = "set search_path to \"$user\", public, test";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.executeUpdate();
 
-            System.out.println("Connection String: " + connectionString);
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 

@@ -17,6 +17,8 @@ public class Reimbursement extends AbstractReimbursement {
 
     private String desc; // Abbreviates description
     private int typeId; // typeId represents the reimbursement type
+    private String resolvedDate;
+    private String submittedDate;
 
     public Reimbursement() {
         super();
@@ -49,6 +51,15 @@ public class Reimbursement extends AbstractReimbursement {
         this.typeId = typeId;
     }
 
+    //Construcor used in reimbursement DAO for getById
+    public Reimbursement(int id, double amount, String submittedDate,String resolvedDate, String desc,int resolver,  int typeId){
+        super(id,resolver,amount);
+        this.desc = desc;
+        this.typeId = typeId;
+        this.resolvedDate = resolvedDate;
+        this.submittedDate = submittedDate;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -64,5 +75,13 @@ public class Reimbursement extends AbstractReimbursement {
     public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
+
+    public String getResolvedDate() {return resolvedDate;}
+
+    public void setResolvedDate(String resolvedDate) {this.resolvedDate = desc;}
+
+    public String getSubmittedDate() {return submittedDate;}
+
+    public void setSubmittedDate(String resolvedDate) {this.resolvedDate = desc;}
 
 }
