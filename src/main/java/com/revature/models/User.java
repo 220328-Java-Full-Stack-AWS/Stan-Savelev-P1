@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * This concrete User class can include additional fields that can be used for
  * extended functionality of the ERS application.
@@ -14,12 +16,13 @@ package com.revature.models;
  * </ul>
  *
  */
+@JsonIgnoreProperties
 public class User extends AbstractUser {
     private String firstName;
     private String lastName;
     private String email;
 
-    public User() {super();}
+    public User() {}
 
     /**
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractUser} class.

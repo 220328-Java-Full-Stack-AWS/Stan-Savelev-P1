@@ -18,8 +18,7 @@ public class UserDAO {
      */
 
     //GET group
-    //Changed return type from optional to user for debugging.
-    //GetById persists but does not deliver data to postman
+
     public User getById(int id) throws SQLException{
             User tempUser = new User();
 
@@ -87,7 +86,7 @@ public class UserDAO {
 
         while(rs.next()) {
             User tempUser = new User();
-            tempUser.setId(rs.getInt("ers_users_id"));
+            tempUser.setId(rs.getInt("ers_user_id"));
             tempUser.setUsername(rs.getString("ers_username"));
             tempUser.setPassword(rs.getString("ers_password"));
             tempUser.setFirstName(rs.getString("user_first_name"));
@@ -198,13 +197,13 @@ public class UserDAO {
     }
 
     //Deletes user by ers_user_id
-    //Not yet tested
-    public void deleteById(int id) throws SQLException {
-        String SQL = "DELETE FROM ers_users WHERE ers_user_id = ?";
-        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-        pstmt.setInt(1, id);
-        pstmt.executeUpdate();
-    }
+
+//    public void deleteById(int id) throws SQLException {
+//        String SQL = "DELETE FROM ers_users WHERE ers_user_id = ?";
+//        PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+//        pstmt.setInt(1, id);
+//        pstmt.executeUpdate();
+//    }
 
 
 }

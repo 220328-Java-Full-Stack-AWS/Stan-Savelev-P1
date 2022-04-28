@@ -86,7 +86,7 @@ public class ReimbursementDAO {
 
     //Change submitRequest to void after test
     //Works as of 04/24/2022
-    public String submitRequest(Reimbursement request) throws SQLException {
+    public void submitRequest(Reimbursement request) throws SQLException {
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String SQL = "INSERT INTO ers_reimbursement"
@@ -111,14 +111,12 @@ public class ReimbursementDAO {
             throw new SQLException();
         }
 
-        return "Request successfully submitted!";
     }
 
 
-    //updateAmountById works when SQL command is executed in Dbeaver but not through the DAO?
-    // Change to void when console can past test
-    //Update(edit) finally works as of 04/25/2022. The issue was the SQL command.
-    public Reimbursement editByReimbId(int id, Reimbursement request) throws SQLException {
+
+    //works as of 04/25/2022.
+    public void editByReimbId(int id, Reimbursement request) throws SQLException {
         LocalDate todaysDate = LocalDate.now();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String SQL = "UPDATE ers_reimbursement SET reimb_amount = ? ,reimb_submitted = ?, reimb_description = ? , reimb_type_id = ? WHERE reimb_id = ?";
@@ -132,7 +130,7 @@ public class ReimbursementDAO {
 
         pstmt.executeUpdate();
 
-        return request;
+
     }
 
     //To clarify, this method deletes the row with the uniquely assigned reimb_id.

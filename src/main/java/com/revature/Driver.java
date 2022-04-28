@@ -14,16 +14,15 @@ import java.util.Arrays;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
-//Note 1: The Junit test package is marked as excluded for the time being.
 public class Driver {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         UserDAO testDao = new UserDAO();
         Scanner loginInput = new Scanner(System.in);
 
-        System.out.println("Enter an id");
-        int idNum = Integer.parseInt(loginInput.next());
 
+        int idNum = Integer.parseInt(loginInput.next());
+//
         try{
             System.out.println(testDao.promoteToAdminById(idNum));
         }catch (SQLException e){

@@ -29,9 +29,11 @@ public class UserService {
 		this.dao = new UserDAO();
 	}
 
+	//create works
 	public User create(User user) throws SQLException {
 		return dao.create(user);
 	}
+	//read works
 	public User read(int id) throws SQLException {
 		return dao.getById(id);
 	}
@@ -45,13 +47,13 @@ public class UserService {
 	public void update(int resolver, int reimbId, int status) throws SQLException {
 		dao.processRequest(resolver,reimbId,status);
 	}
-
+	//update works
 	public void update(int id) throws SQLException {
 		dao.promoteToAdminById(id);
 	}
-	public void delete(int id) throws SQLException {
-		dao.deleteById(id);
-	}
+//	public void delete(int id) throws SQLException {
+//		dao.deleteById(id);
+//	}
 
 }
 

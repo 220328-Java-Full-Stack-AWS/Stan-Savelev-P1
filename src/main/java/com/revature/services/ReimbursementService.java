@@ -1,10 +1,9 @@
 package com.revature.services;
 
 import com.revature.models.Reimbursement;
-import com.revature.models.Status;
-import com.revature.models.User;
+import com.revature.persistance.ReimbursementDAO;
 
-import java.util.Collections;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -26,28 +25,44 @@ import java.util.List;
  */
 public class ReimbursementService {
 
-    /**
-     * <ul>
-     *     <li>Should ensure that the user is logged in as a Finance Manager</li>
-     *     <li>Must throw exception if user is not logged in as a Finance Manager</li>
-     *     <li>Should ensure that the reimbursement request exists</li>
-     *     <li>Must throw exception if the reimbursement request is not found</li>
-     *     <li>Should persist the updated reimbursement status with resolver information</li>
-     *     <li>Must throw exception if persistence is unsuccessful</li>
-     * </ul>
-     *
-     * Note: unprocessedReimbursement will have a status of PENDING, a non-zero ID and amount, and a non-null Author.
-     * The Resolver should be null. Additional fields may be null.
-     * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
-     */
-    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
-        return null;
+
+    private final ReimbursementDAO dao;
+
+    public ReimbursementService() {
+        this.dao = new ReimbursementDAO();
     }
 
-    /**
-     * Should retrieve all reimbursements with the correct status.
-     */
-    public List<Reimbursement> getReimbursementsByStatus(Status status) {
-        return Collections.emptyList();
+    public void create(Reimbursement request) throws SQLException {
+        dao.submitRequest(request);
     }
+
+    public List<Reimbursement> read(int id) throws SQLException{
+        return dao.getAllRequestsById(id);
+    }
+
+    public void update(int id, Reimbursement request) throws SQLException{
+        dao.editByReimbId(id, request);
+    }
+
+
+
+/**
+ * <ul>
+ *     <li>Should ensure that the user is logged in as a Finance Manager</li>
+ *     <li>Must throw exception if user is not logged in as a Finance Manager</li>
+ *     <li>Should ensure that the reimbursement request exists</li>
+ *     <li>Must throw exception if the reimbursement request is not found</li>
+ *     <li>Should persist the updated reimbursement status with resolver information</li>
+ *     <li>Must throw exception if persistence is unsuccessful</li>
+ * </ul>
+ *
+ */
+
+//    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
+//        return null;
+//    }
+
+    //    public List<Reimbursement> getReimbursementsByStatus(Status status) {
+//        return Collections.emptyList();
+//    }
 }
